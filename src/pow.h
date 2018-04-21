@@ -23,5 +23,6 @@ unsigned int CalculateNextWorkRequired(arith_uint256 bnAvg,
 
 /** Check whether a block hash satisfies the proof-of-work requirement specified by nBits */
 bool CheckProofOfWork(uint256 hash, unsigned int nBits, const Consensus::Params&);
+bool CheckEquihashSolution(const CBlockHeader *pblock, const CChainParams& params);
 
 #endif // BITCOIN_POW_H
