@@ -1753,11 +1753,19 @@ static unsigned int GetBlockScriptFlags(const CBlockIndex* pindex, const Consens
     }
 
     // Start enforcing the DERSIG (BIP66) rule
-    flags |= SCRIPT_VERIFY_DERSIG;
+    if (pindex->nHeight >= consensusparams.BIP66Height) {
+        flags |= SCRIPT_VERIFY_DERSIG;
+    }
 
     // Start enforcing CHECKLOCKTIMEVERIFY (BIP65) rule
     if (pindex->nHeight >= consensusparams.BIP65Height) {
         flags |= SCRIPT_VERIFY_CHECKLOCKTIMEVERIFY;
+    }
+
+    // Start enforcing rules for first hard fork
+    if (isForkEnabled(pindex->nHeight)){
+        flags |= SCRIPT_VERIFY_FORKID;
+        flags |= SCRIPT_VERIFY_WITNESS_BOOTSTRAP;
     }
 
     // Start enforcing BIP68 (sequence locks) and BIP112 (CHECKSEQUENCEVERIFY) using versionbits logic.
@@ -1771,6 +1779,9 @@ static unsigned int GetBlockScriptFlags(const CBlockIndex* pindex, const Consens
         flags |= SCRIPT_VERIFY_NULLDUMMY;
     }
 
+    // these are enforced from the genesis block - sanity check here to make sure chainparam heights are appropriately 0
+    unsigned int minimal_required = SCRIPT_VERIFY_P2SH | SCRIPT_VERIFY_DERSIG | SCRIPT_VERIFY_CHECKLOCKTIMEVERIFY;
+    assert(flags | minimal_required == minimal_required);
     return flags;
 }
 
