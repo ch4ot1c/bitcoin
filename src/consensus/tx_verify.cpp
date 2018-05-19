@@ -179,7 +179,7 @@ bool CheckTransaction(const CTransaction& tx, CValidationState &state, bool fChe
                          REJECT_INVALID, "bad-txns-vout-empty");
 
     // Size limits (this doesn't take the witness into account, as that hasn't been checked for malleability)
-    if (::GetSerializeSize(tx, SER_NETWORK, PROTOCOL_VERSION | SERIALIZE_TRANSACTION_NO_WITNESS) * WITNESS_SCALE_FACTOR > MAX_BLOCK_WEIGHT)
+    if (::GetSerializeSize(tx, SER_NETWORK, PROTOCOL_VERSION | SERIALIZE_TRANSACTION_NO_WITNESS) * WITNESS_SCALE_FACTOR > MAX_TX_WEIGHT)
         return state.DoS(100, false, REJECT_INVALID, "bad-txns-oversize");
 
     // Check for negative or overflow output values
@@ -282,7 +282,7 @@ bool CheckTransaction(const CTransaction& tx, CValidationState &state, bool fChe
     return true;
 }
 
-bool Consensus::CheckTxInputs(const CTransaction& tx, CValidationState& state, const CCoinsViewCache& inputs, int nSpendHeight, CAmount& txfee, bool fCoinbaseMustBeProtected)
+bool Consensus::CheckTxInputs(const CTransaction& tx, CValidationState& state, const CCoinsViewCache& inputs, int nSpendHeight, CAmount& txfee, bool fCoinbaseMustBeProtected, uint64_t forkStartHeight, uint64_t forkHeightRange)
 {
     // are the actual inputs available?
     if (!inputs.HaveInputs(tx)) {
@@ -311,7 +311,7 @@ bool Consensus::CheckTxInputs(const CTransaction& tx, CValidationState& state, c
 
             // Ensure that coinbases cannot be spent to transparent outputs
             // Disabled on regtest
-            if (fCoinbaseMustBeProtected &&
+            if (fCoinbaseMustBeProtected && (coin.nHeight <= forkStartHeight || coin.nHeight > forkStartHeight + forkHeightRange) &&
                 !tx.vout.empty()) {
                 return state.Invalid(
                     error("CheckInputs(): tried to spend coinbase with transparent outputs"),

@@ -17,6 +17,7 @@
 #include <coins.h>
 #include <indirectmap.h>
 #include <consensus/params.h>
+#include <chainparams.h>
 #include <policy/feerate.h>
 #include <primitives/transaction.h>
 #include <sync.h>
@@ -529,7 +530,7 @@ public:
      * all inputs are in the mapNextTx array). If sanity-checking is turned off,
      * check does nothing.
      */
-    void check(const CCoinsViewCache *pcoins, const Consensus::Params& consensus) const;
+    void check(const CCoinsViewCache *pcoins, const CChainParams& chainparams) const;
     void setSanityCheck(double dFrequency = 1.0) { nCheckFrequency = static_cast<uint32_t>(dFrequency * 4294967295.0); }
 
     // addUnchecked must updated state for all ancestors of a given transaction,

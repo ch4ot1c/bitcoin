@@ -122,7 +122,7 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 1510704000; // November 15th, 2017.
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork  = uint256S("0x00000000000000000000000000000000000000000000000000000000ffffffff");
+        consensus.nMinimumChainWork  = uint256S("0x0000000000000000000000000000000000000000000000000000ffffffffffff");
 
         // By default assume that the signatures in ancestors of this block are valid.
         consensus.defaultAssumeValid = uint256S("0x0000000082ece76130c82337903b14a2109fab2dcd2d153fcdbf48a0054a694b");
@@ -135,7 +135,6 @@ public:
         nDefaultPort = 7933;
 
         nPruneAfterHeight = 100000;
-        const size_t N = 200, K = 9;
 
         nEquihashN = 200;
         nEquihashK = 9;
@@ -187,6 +186,7 @@ public:
                 { 279500, uint256S("0x0000000082ece76130c82337903b14a2109fab2dcd2d153fcdbf48a0054a694b") },
             }
         };
+        consensus.defaultAssumeValid = uint256S("0x0000000082ece76130c82337903b14a2109fab2dcd2d153fcdbf48a0054a694b");
 
         chainTxData = ChainTxData{
             1520105951, // * UNIX timestamp of last known number of transactions
