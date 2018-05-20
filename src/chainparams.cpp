@@ -91,8 +91,14 @@ public:
         strNetworkID = "main";
 
         consensus.fCoinbaseMustBeProtected = true;
-
         consensus.nSubsidyHalvingInterval = 840000;
+
+        // P2SH, height in coinbase, CLTV and DERSIG all enforced from genesis
+        consensus.BIP16Height = 0;
+        consensus.BIP34Height = 0;
+        consensus.BIP65Height = 0;
+        consensus.BIP66Height = 0;
+
         consensus.prePowLimit = uint256S("0007ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.powLimit = uint256S("07ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowAveragingWindow = 17;
@@ -105,21 +111,18 @@ public:
         consensus.fPowNoRetargeting = false;
 
         consensus.nRuleChangeActivationThreshold = 1916; // 95% of 2016
-        consensus.nMinerConfirmationWindow = 2016; // nPowTargetTimespan / nPowTargetSpacing
+        consensus.nMinerConfirmationWindow = 2016;
 
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 1199145601; // January 1, 2008
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 1230767999; // December 31, 2008
 
         // Deployment of BIP68, BIP112, and BIP113.
-        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].bit = 0;
-        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 1462060800; // May 1st, 2016
-        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 1493596800; // May 1st, 2017
-
         // Deployment of SegWit (BIP141, BIP143, and BIP147)
-        consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].bit = 1;
-        consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nStartTime = 1479168000; // November 15th, 2016.
-        consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 1510704000; // November 15th, 2017.
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].bit = 0;
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 1533081600; // 2018-08-01
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout   = 1535587200; // 2018-08-30
+        static_assert(Consensus::DEPLOYMENT_SEGWIT == Consensus::DEPLOYMENT_CSV, "segwit and csv deployed together");
 
         // The best chain should have at least this much work.
         consensus.nMinimumChainWork  = uint256S("0x0000000000000000000000000000000000000000000000000000ffffffffffff");
@@ -138,14 +141,12 @@ public:
 
         nEquihashN = 200;
         nEquihashK = 9;
-        //static_assert(equihash_parameters_acceptable(nEquihashN, nEquihashK));
 
         uint256 nNonce = uint256S("000000000000000000000000000000000000000000000000000000000000021d");
         genesis = CreateGenesisBlock(1478403829, nNonce, 0x1f07ffff, 4, 0, GenesisSolutions::MAINNET);
         consensus.hashGenesisBlock = genesis.GetHash();
         assert(genesis.hashMerkleRoot == uint256S("0x19612bcf00ea7611d315d7f43554fa983c6e8c30cba17e52c679e0e80abf7d42"));
         assert(consensus.hashGenesisBlock == uint256S("0x0007104ccda289427919efc39dc9e4d499804b7bebc22df55f8b834301260602"));
-
 
         vSeeds.emplace_back("dnsseed.btcprivate.org");
 
@@ -184,9 +185,10 @@ public:
                 { 277992, uint256S("0x0111d3ffc37fb3474ed2a6e3e9bfc53ee0d7cc0413a732f19d59061700f6b842") },
                 { 278458, uint256S("0x0747cecedfd30754323c5afdaef547d5e90fd50485370ebf12dd33bbac61faaa") },
                 { 279500, uint256S("0x0000000082ece76130c82337903b14a2109fab2dcd2d153fcdbf48a0054a694b") },
+                { 320000, uint256S("0x0000000311dc0b774a2f90476b5ee225999df6eb4f3ba1bc875e804bab17e313") }
             }
         };
-        consensus.defaultAssumeValid = uint256S("0x0000000082ece76130c82337903b14a2109fab2dcd2d153fcdbf48a0054a694b");
+        consensus.defaultAssumeValid = checkpointData.mapCheckpoints.crbegin()->second;
 
         chainTxData = ChainTxData{
             1520105951, // * UNIX timestamp of last known number of transactions
