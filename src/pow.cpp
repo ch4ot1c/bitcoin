@@ -67,6 +67,9 @@ unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHead
             return nProofOfWorkLimit;
     }
 
+    if (params.fPowNoRetargeting)
+        return pindexLast->nBits;
+
     // Find the first block in the averaging interval
     const CBlockIndex* pindexFirst = pindexLast;
     arith_uint256 bnTot {0};
@@ -91,9 +94,6 @@ unsigned int CalculateNextWorkRequired(arith_uint256 bnAvg,
                                        int64_t nLastBlockTime, int64_t nFirstBlockTime,
                                        const Consensus::Params& params, const arith_uint256 bnPowLimit, bool isFork)
 {
-    if (params.fPowNoRetargeting)
-        return pindexLast->nBits;
-
     // Limit adjustment step
     // Use medians to prevent time-warp attacks
     int64_t nActualTimespan = nLastBlockTime - nFirstBlockTime;
