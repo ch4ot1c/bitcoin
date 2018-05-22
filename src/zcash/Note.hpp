@@ -6,6 +6,8 @@
 #include "Address.hpp"
 #include "NoteEncryption.hpp"
 
+#include <array>
+
 namespace libzcash {
 
 class Note {
