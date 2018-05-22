@@ -2,24 +2,25 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include <asyncrpcoperation_sendmany.h>
-#include <asyncrpcqueue.h>
+#include "asyncrpcoperation_sendmany.h"
+
 #include <amount.h>
+#include <asyncrpcqueue.h>
 #include <consensus/upgrades.h>
 #include <core_io.h>
 #include <init.h>
 #include <net.h>
 #include <netbase.h>
-#include <rpcserver.h>
+#include <rpc/server.h>
 #include <timedata.h>
+#include <wallet/wallet.h>
+#include <wallet/walletdb.h>
+#include <script/interpreter.h>
 #include <util.h>
 #include <utilmoneystr.h>
-#include <wallet.h>
-#include <walletdb.h>
-#include <script/interpreter.h>
 #include <utiltime.h>
 #include <validation.h>
-#include <rpcprotocol.h>
+#include <rpc/protocol.h>
 #include <zcash/IncrementalMerkleTree.hpp>
 #include <sodium.h>
 #include <miner.h>
@@ -74,7 +75,7 @@ AsyncRPCOperation_sendmany::AsyncRPCOperation_sendmany(
         throw JSONRPCError(RPC_INVALID_PARAMETER, "No recipients");
     }
 
-    fromtaddr_ = CBitcoinAddress(fromAddress);
+    fromtaddr_ = DecodeDestination(fromAddress);
     isfromtaddr_ = fromtaddr_.IsValid();
     isfromzaddr_ = false;
 
@@ -829,7 +830,7 @@ void AsyncRPCOperation_sendmany::sign_send_raw_transaction(UniValue obj)
 
 
 bool AsyncRPCOperation_sendmany::find_utxos(bool fAcceptCoinbase=false) {
-    set<CBitcoinAddress> setAddress = {fromtaddr_};
+    set<CTxDestination> setAddress = {fromtaddr_};
     vector<COutput> vecOutputs;
 
     LOCK2(cs_main, pwalletMain->cs_wallet);
@@ -902,7 +903,7 @@ bool AsyncRPCOperation_sendmany::find_unspent_notes() {
 
     // sort in descending order, so big notes appear first
     std::sort(z_inputs_.begin(), z_inputs_.end(), [](SendManyInputJSOP i, SendManyInputJSOP j) -> bool {
-        return ( std::get<2>(i) > std::get<2>(j));
+        return (std::get<2>(i) > std::get<2>(j));
     });
 
     return true;
@@ -1101,12 +1102,12 @@ void AsyncRPCOperation_sendmany::add_taddr_outputs_to_tx() {
         std::string outputAddress = std::get<0>(r);
         CAmount nAmount = std::get<1>(r);
 
-        CBitcoinAddress address(outputAddress);
-        if (!address.IsValid()) {
+        CTxDestination address = DecodeDestination(outputAddress);
+        if (!IsValidDestination(address)) {
             throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid output address, not a valid taddr.");
         }
 
-        CScript scriptPubKey = GetScriptForDestination(address.Get());
+        CScript scriptPubKey = GetScriptForDestination(address);
 
         CTxOut out(nAmount, scriptPubKey);
         rawTx.vout.push_back(out);
