@@ -78,14 +78,14 @@ static UniValue createmultisig(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() < 2 || request.params.size() > 3)
     {
-        std::string msg = "createmultisig nrequired [\"key\",...] ( \"address_type\" )\n"
+        std::string msg = "createmultisig nrequired \"keys\" ( \"address_type\" )\n"
             "\nCreates a multi-signature address with n signature of m keys required.\n"
             "It returns a json object with the address and redeemScript.\n"
             "\nArguments:\n"
             "1. nrequired                    (numeric, required) The number of required signatures out of the n keys.\n"
             "2. \"keys\"                       (string, required) A json array of hex-encoded public keys\n"
             "     [\n"
-            "       \"key\"                    (string) The hex-encoded public key\n"
+            "       \"pubkey\"                    (string) The hex-encoded public key\n"
             "       ,...\n"
             "     ]\n"
             "3. \"address_type\"               (string, optional) The address type to use. Options are \"legacy\", \"p2sh-segwit\", and \"bech32\". Default is legacy.\n"
@@ -240,7 +240,7 @@ static UniValue setmocktime(const JSONRPCRequest& request)
             "setmocktime timestamp\n"
             "\nSet the local time to given timestamp (-regtest only)\n"
             "\nArguments:\n"
-            "1. timestamp  (integer, required) Unix seconds-since-epoch timestamp\n"
+            "1. timestamp  (int, required) Unix seconds-since-epoch timestamp\n"
             "   Pass 0 to go back to using the system time."
         );
 
@@ -299,7 +299,7 @@ static UniValue getmemoryinfo(const JSONRPCRequest& request)
      */
     if (request.fHelp || request.params.size() > 1)
         throw std::runtime_error(
-            "getmemoryinfo (\"mode\")\n"
+            "getmemoryinfo ( \"mode\" )\n"
             "Returns an object containing information about memory usage.\n"
             "Arguments:\n"
             "1. \"mode\" determines what kind of information is returned. This argument is optional, the default mode is \"stats\".\n"
@@ -361,7 +361,7 @@ UniValue logging(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() > 2) {
         throw std::runtime_error(
-            "logging ( <include> <exclude> )\n"
+            "logging ( \"include\" \"exclude\" )\n"
             "Gets and sets the logging configuration.\n"
             "When called without an argument, returns the list of categories with status that are currently being debug logged or not.\n"
             "When called with arguments, adds or removes categories from debug logging and return the lists above.\n"
