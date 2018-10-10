@@ -204,8 +204,8 @@ static UniValue gettxoutproof(const JSONRPCRequest& request)
 {
     if (request.fHelp || (request.params.size() != 1 && request.params.size() != 2))
         throw std::runtime_error(
-            "gettxoutproof [\"txid\",...] ( blockhash )\n"
-            "\nReturns a hex-encoded proof that \"txid\" was included in a block.\n"
+            "gettxoutproof \"txids\" ( \"blockhash\" )\n"
+            "\nReturns a hex-encoded proof that 'txids' were included in a block.\n"
             "\nNOTE: By default this function only works sometimes. This is when there is an\n"
             "unspent output in the utxo for this transaction. To make it always work,\n"
             "you need to maintain a transaction index, using the -txindex command line option or\n"
@@ -443,7 +443,7 @@ static UniValue createrawtransaction(const JSONRPCRequest& request)
     if (request.fHelp || request.params.size() < 2 || request.params.size() > 4) {
         throw std::runtime_error(
             // clang-format off
-            "createrawtransaction [{\"txid\":\"id\",\"vout\":n},...] [{\"address\":amount},{\"data\":\"hex\"},...] ( locktime ) ( replaceable )\n"
+            "createrawtransaction \"inputs\" \"outputs\" ( locktime replaceable )\n"
             "\nCreate a transaction spending the given inputs and creating new outputs.\n"
             "Outputs can be addresses or data.\n"
             "Returns hex-encoded raw transaction.\n"
@@ -674,7 +674,7 @@ static UniValue combinerawtransaction(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() != 1)
         throw std::runtime_error(
-            "combinerawtransaction [\"hexstring\",...]\n"
+            "combinerawtransaction \"txs\"\n"
             "\nCombine multiple partially signed transactions into one transaction.\n"
             "The combined transaction may be another partially signed transaction or a \n"
             "fully signed transaction."
@@ -897,7 +897,7 @@ static UniValue signrawtransactionwithkey(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() < 2 || request.params.size() > 4)
         throw std::runtime_error(
-            "signrawtransactionwithkey \"hexstring\" [\"privatekey1\",...] ( [{\"txid\":\"id\",\"vout\":n,\"scriptPubKey\":\"hex\",\"redeemScript\":\"hex\"},...] sighashtype )\n"
+            "signrawtransactionwithkey \"hexstring\" \"privkeys\" ( \"prevtxs\" \"sighashtype\" )\n"
             "\nSign inputs for raw transaction (serialized, hex-encoded).\n"
             "The second argument is an array of base58-encoded private\n"
             "keys that will be the only keys used to sign the transaction.\n"
@@ -1080,13 +1080,15 @@ static UniValue testmempoolaccept(const JSONRPCRequest& request)
     if (request.fHelp || request.params.size() < 1 || request.params.size() > 2) {
         throw std::runtime_error(
             // clang-format off
-            "testmempoolaccept [\"rawtxs\"] ( allowhighfees )\n"
+            "testmempoolaccept \"rawtxs\" ( allowhighfees )\n"
             "\nReturns if raw transaction (serialized, hex-encoded) would be accepted by mempool.\n"
             "\nThis checks if the transaction violates the consensus or policy rules.\n"
             "\nSee sendrawtransaction call.\n"
             "\nArguments:\n"
-            "1. [\"rawtxs\"]       (array, required) An array of hex strings of raw transactions.\n"
-            "                                        Length must be one for now.\n"
+            "1. \"rawtxs\"                 (string, required) A json array of hex-encoded raw transactions. Length must be one.\n"
+            "    [                         (json array of strings)\n"
+            "      \"tx\"                  (string) Raw transaction\n"
+            "    ]\n"
             "2. allowhighfees    (boolean, optional, default=false) Allow high fees\n"
             "\nResult:\n"
             "[                   (array) The result of the mempool acceptance test for each raw transaction in the input array.\n"
@@ -1452,7 +1454,7 @@ UniValue combinepsbt(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 1)
         throw std::runtime_error(
-            "combinepsbt [\"psbt\",...]\n"
+            "combinepsbt \"txs\"\n"
             "\nCombine multiple partially signed Bitcoin transactions into one transaction.\n"
             "Implements the Combiner role.\n"
             "\nArguments:\n"
@@ -1568,7 +1570,7 @@ UniValue createpsbt(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() < 2 || request.params.size() > 4)
         throw std::runtime_error(
-                            "createpsbt [{\"txid\":\"id\",\"vout\":n},...] [{\"address\":amount},{\"data\":\"hex\"},...] ( locktime ) ( replaceable )\n"
+                            "createpsbt \"inputs\" \"outputs\" ( locktime replaceable )\n"
                             "\nCreates a transaction in the Partially Signed Transaction format.\n"
                             "Implements the Creator role.\n"
                             "\nArguments:\n"
