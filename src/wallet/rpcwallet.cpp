@@ -1461,7 +1461,7 @@ UniValue listtransactions(const JSONRPCRequest& request)
     if (request.fHelp || request.params.size() > 4)
         throw std::runtime_error(
             "listtransactions ( \"dummy\" count skip include_watchonly )\n"
-            "\nReturns up to 'count' most recent transactions skipping the first 'from' transactions.\n"
+            "\nReturns up to 'count' most recent transactions skipping the first 'skip' transactions.\n"
             "\nArguments:\n"
             "1. \"dummy\"    (string, optional) If set, should be \"*\" for backwards compatibility.\n"
             "2. count          (numeric, optional, default=10) The number of transactions to return\n"
