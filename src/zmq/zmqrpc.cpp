@@ -20,7 +20,7 @@ UniValue getzmqnotifications(const JSONRPCRequest& request)
             "\nReturns information about the active ZeroMQ notifications.\n"
             "\nResult:\n"
             "[\n"
-            "  {                        (json object)\n"
+            "  {                        (object)\n"
             "    \"type\": \"pubhashtx\",   (string) Type of notification\n"
             "    \"address\": \"...\"       (string) Address of the publisher\n"
             "  },\n"
