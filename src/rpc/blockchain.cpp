@@ -206,7 +206,7 @@ static UniValue waitfornewblock(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() > 1)
         throw std::runtime_error(
-            "waitfornewblock (timeout)\n"
+            "waitfornewblock ( timeout )\n"
             "\nWaits for a specific new block and returns useful info about it.\n"
             "\nReturns the current block on timeout or exit.\n"
             "\nArguments:\n"
@@ -244,7 +244,7 @@ static UniValue waitforblock(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() < 1 || request.params.size() > 2)
         throw std::runtime_error(
-            "waitforblock <blockhash> (timeout)\n"
+            "waitforblock \"blockhash\" ( timeout )\n"
             "\nWaits for a specific new block and returns useful info about it.\n"
             "\nReturns the current block on timeout or exit.\n"
             "\nArguments:\n"
@@ -286,12 +286,12 @@ static UniValue waitforblockheight(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() < 1 || request.params.size() > 2)
         throw std::runtime_error(
-            "waitforblockheight <height> (timeout)\n"
+            "waitforblockheight height ( timeout )\n"
             "\nWaits for (at least) block height and returns the height and hash\n"
             "of the current tip.\n"
             "\nReturns the current block on timeout or exit.\n"
             "\nArguments:\n"
-            "1. height  (required, int) Block height to wait for (int)\n"
+            "1. height  (int, required) Block height to wait for\n"
             "2. timeout (int, optional, default=0) Time in milliseconds to wait for a response. 0 indicates no timeout.\n"
             "\nResult:\n"
             "{                           (json object)\n"
@@ -925,7 +925,7 @@ static UniValue pruneblockchain(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 1)
         throw std::runtime_error(
-            "pruneblockchain\n"
+            "pruneblockchain height\n"
             "\nArguments:\n"
             "1. \"height\"       (numeric, required) The block height to prune up to. May be set to a discrete height, or a unix timestamp\n"
             "                  to prune blocks whose block time is at least 2 hours older than the provided timestamp.\n"
@@ -1020,8 +1020,8 @@ UniValue gettxout(const JSONRPCRequest& request)
             "\nReturns details about an unspent transaction output.\n"
             "\nArguments:\n"
             "1. \"txid\"             (string, required) The transaction id\n"
-            "2. \"n\"                (numeric, required) vout number\n"
-            "3. \"include_mempool\"  (boolean, optional) Whether to include the mempool. Default: true."
+            "2. n                    (numeric, required) vout number\n"
+            "3. include_mempool      (boolean, optional) Whether to include the mempool. Default: true."
             "     Note that an unspent output that is spent in the mempool won't appear.\n"
             "\nResult:\n"
             "{\n"
@@ -1562,7 +1562,7 @@ static UniValue getchaintxstats(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() > 2)
         throw std::runtime_error(
-            "getchaintxstats ( nblocks blockhash )\n"
+            "getchaintxstats ( nblocks \"blockhash\" )\n"
             "\nCompute statistics about the total number and rate of transactions in the chain.\n"
             "\nArguments:\n"
             "1. nblocks      (numeric, optional) Size of the window in number of blocks (default: one month).\n"
@@ -1692,13 +1692,13 @@ static UniValue getblockstats(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() < 1 || request.params.size() > 4) {
         throw std::runtime_error(
-            "getblockstats hash_or_height ( stats )\n"
+            "getblockstats \"hash_or_height\" ( stats )\n"
             "\nCompute per block statistics for a given window. All amounts are in satoshis.\n"
             "It won't work for some heights with pruning.\n"
             "It won't work without -txindex for utxo_size_inc, *fee or *feerate stats.\n"
             "\nArguments:\n"
             "1. \"hash_or_height\"     (string or numeric, required) The block hash or height of the target block\n"
-            "2. \"stats\"              (array,  optional) Values to plot, by default all values (see result below)\n"
+            "2. \"stats\"              (array, optional) Values to plot, by default all values (see result below)\n"
             "    [\n"
             "      \"height\",         (string, optional) Selected statistic\n"
             "      \"time\",           (string, optional) Selected statistic\n"
@@ -2039,7 +2039,7 @@ UniValue scantxoutset(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() < 1 || request.params.size() > 2)
         throw std::runtime_error(
-            "scantxoutset <action> ( <scanobjects> )\n"
+            "scantxoutset \"action\" \"scanobjects\"\n"
             "\nEXPERIMENTAL warning: this call may be removed or changed in future releases.\n"
             "\nScans the unspent transaction output set for entries that match certain output descriptors.\n"
             "Examples of output descriptors are:\n"
