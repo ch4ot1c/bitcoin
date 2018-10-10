@@ -74,7 +74,7 @@ class WalletTest(BitcoinTestFramework):
         assert_equal(self.nodes[0].getbalance(minconf=1), 50)
 
         # first argument of getbalance must be excluded or set to "*"
-        assert_raises_rpc_error(-32, "dummy first argument must be excluded or set to \"*\"", self.nodes[0].getbalance, "")
+        assert_raises_rpc_error(-32, "Dummy first argument must be excluded or set to \"*\"", self.nodes[0].getbalance, "")
 
         # Check that only first and second nodes have UTXOs
         utxos = self.nodes[0].listunspent()
