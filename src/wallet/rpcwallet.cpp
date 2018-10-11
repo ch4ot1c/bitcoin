@@ -684,7 +684,7 @@ static UniValue getbalance(const JSONRPCRequest& request)
 
     if (request.fHelp || (request.params.size() > 3 ))
         throw std::runtime_error(
-            "getbalance ( dummy minconf include_watchonly )\n"
+            "getbalance ( \"dummy\" minconf include_watchonly )\n"
             "\nReturns the total available balance.\n"
             "The available balance is what the wallet considers currently spendable, and is\n"
             "thus affected by options which limit spendability such as -spendzeroconfchange.\n"
