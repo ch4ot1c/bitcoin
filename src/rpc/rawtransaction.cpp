@@ -922,7 +922,7 @@ static UniValue signrawtransactionwithkey(const JSONRPCRequest& request)
             "       }\n"
             "       ,...\n"
             "    ]\n"
-            "4. \"sighashtype\"                    (string, optional, default=ALL) The signature hash type. Must be one of:\n"
+            "4. \"sighashtype\"                    (string, optional, default=\"ALL\") The signature hash type. Must be one of:\n"
             "       \"ALL\"\n"
             "       \"NONE\"\n"
             "       \"SINGLE\"\n"
