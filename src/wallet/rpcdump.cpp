@@ -341,10 +341,15 @@ UniValue importprunedfunds(const JSONRPCRequest& request)
     if (request.fHelp || request.params.size() != 2)
         throw std::runtime_error(
             "importprunedfunds \"rawtransaction\" \"txoutproof\"\n"
-            "\nImports funds without rescan. Corresponding address or script must previously be included in wallet. Aimed towards pruned wallets. The end-user is responsible to import additional transactions that subsequently spend the imported outputs or rescan after the point in the blockchain the transaction is included.\n"
+            "\nImports funds without rescan. Corresponding address or script must previously be included in wallet. Aimed towards pruned wallets. The end-user is responsible for importing additional transactions that subsequently spend the imported outputs or rescan after the point in the blockchain the transaction is included.\n"
             "\nArguments:\n"
             "1. \"rawtransaction\" (string, required) A raw transaction in hex funding an already-existing address in wallet\n"
             "2. \"txoutproof\"     (string, required) The hex output from gettxoutproof that contains the transaction\n"
+            "\nExamples:\n"
+            "\nImport pruned funds\n"
+            + HelpExampleCli("importprunedfunds", "\"rawtxhex\" \"txoutproofhex\"") +
+            "\nAs a JSON-RPC call\n"
+            + HelpExampleRpc("importprunedfunds", "\"rawtxhex\", \"txoutproofhex\"")
         );
 
     CMutableTransaction tx;
