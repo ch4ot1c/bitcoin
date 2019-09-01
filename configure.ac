@@ -1345,6 +1345,23 @@ if test x$have_protobuf != xno &&
   BITCOIN_QT_PATH_PROGS([PROTOC], [protoc],$protoc_bin_path)
 fi
 
+# Zcash Rust
+RUST_LIBS="-lrustzcash"
+case $host in
+  *mingw*)
+    ;;
+  *)
+    RUST_LIBS="$RUST_LIBS -ldl"
+    ;;
+esac
+
+# Additional Zcash flags
+AX_CHECK_COMPILE_FLAG([-fwrapv],[CXXFLAGS="$CXXFLAGS -fwrapv"])
+AX_CHECK_COMPILE_FLAG([-fno-strict-aliasing],[CXXFLAGS="$CXXFLAGS -fno-strict-aliasing"])
+AX_CHECK_COMPILE_FLAG([-Wno-builtin-declaration-mismatch],[CXXFLAGS="$CXXFLAGS -Wno-builtin-declaration-mismatch"],,[[$CXXFLAG_WERROR]])
+
+LIBZCASH_LIBS="$BOOST_SYSTEM_LIB -lcrypto -lsodium $RUST_LIBS"
+
 AC_MSG_CHECKING([whether to build bitcoind])
 AM_CONDITIONAL([BUILD_BITCOIND], [test x$build_bitcoind = xyes])
 AC_MSG_RESULT($build_bitcoind)
@@ -1585,6 +1602,7 @@ AC_SUBST(SSL_LIBS)
 AC_SUBST(EVENT_LIBS)
 AC_SUBST(EVENT_PTHREADS_LIBS)
 AC_SUBST(ZMQ_LIBS)
+AC_SUBST(LIBZCASH_LIBS)
 AC_SUBST(PROTOBUF_LIBS)
 AC_SUBST(QR_LIBS)
 AC_CONFIG_FILES([Makefile src/Makefile doc/man/Makefile share/setup.nsi share/qt/Info.plist test/config.ini])
