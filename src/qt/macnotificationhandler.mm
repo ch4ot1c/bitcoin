@@ -13,7 +13,7 @@
 - (NSString *)__bundleIdentifier
 {
     if (self == [NSBundle mainBundle]) {
-        return @"org.bitcoinfoundation.BTCP-Qt";
+        return @"org.btcpfoundation.BTCP-Qt";
     } else {
         return [self __bundleIdentifier];
     }
