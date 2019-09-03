@@ -1,5 +1,5 @@
 Bitcoin version 0.5.2 is now available for download at:
-http://sourceforge.net/projects/bitcoin/files/Bitcoin/bitcoin-0.5.2/
+http://sourceforge.net/projects/bitcoin/files/BTCP/bitcoin-0.5.2/
 
 This is a bugfix-only release based on 0.5.1.
 

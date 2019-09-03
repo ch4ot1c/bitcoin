@@ -1,5 +1,5 @@
 BTCP-Qt version 0.8.0 is now available from:
-  http://sourceforge.net/projects/bitcoin/files/Bitcoin/bitcoin-0.8.0/
+  http://sourceforge.net/projects/bitcoin/files/BTCP/bitcoin-0.8.0/
 
 This is a major release designed to improve performance and handle the
 increasing volume of transactions on the network.

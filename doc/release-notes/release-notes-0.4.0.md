@@ -1,5 +1,5 @@
 Bitcoin version 0.4.0 is now available for download at:
-http://sourceforge.net/projects/bitcoin/files/Bitcoin/bitcoin-0.4.0/
+http://sourceforge.net/projects/bitcoin/files/BTCP/bitcoin-0.4.0/
 
 The main feature in this release is wallet private key encryption;
 you can set a passphrase that must be entered before sending coins.
@@ -48,10 +48,10 @@ your coins.
 It is recommended that you backup your wallet file before you
 encrypt your wallet.  To do this, close the Bitcoin client and
 copy the wallet.dat file from ~/.bitcoin/ on Linux, /Users/(user
-name)/Application Support/Bitcoin/ on Mac OSX, and %APPDATA%/Bitcoin/
-on Windows (that is /Users/(user name)/AppData/Roaming/Bitcoin on
+name)/Application Support/BTCP/ on Mac OSX, and %APPDATA%/BTCP/
+on Windows (that is /Users/(user name)/AppData/Roaming/BTCP on
 Windows Vista and 7 and /Documents and Settings/(user name)/Application
-Data/Bitcoin on Windows XP).  Once you have copied that file to a
+Data/BTCP on Windows XP).  Once you have copied that file to a
 safe location, reopen the Bitcoin client and Encrypt your wallet.
 If everything goes fine, delete the backup and enjoy your encrypted
 wallet.  Note that once you encrypt your wallet, you will never be

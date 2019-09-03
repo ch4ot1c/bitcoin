@@ -366,6 +366,6 @@ bitcoin.org (see below for bitcoin.org update instructions).
 
   - Update title of #bitcoin on Freenode IRC
 
-  - Optionally twitter, reddit /r/Bitcoin, ... but this will usually sort out itself
+  - Optionally twitter, reddit /r/BTCP, ... but this will usually sort out itself
 
   - Celebrate

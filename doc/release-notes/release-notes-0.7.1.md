@@ -1,5 +1,5 @@
 Bitcoin version 0.7.1 is now available from:
-  http://sourceforge.net/projects/bitcoin/files/Bitcoin/bitcoin-0.7.1/
+  http://sourceforge.net/projects/bitcoin/files/BTCP/bitcoin-0.7.1/
 
 This is a bug-fix minor release.
 
