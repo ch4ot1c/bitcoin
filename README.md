@@ -1,7 +1,8 @@
-Bitcoin Core integration/staging tree
+The Rebase
 =====================================
 
-https://bitcoincore.org
+This repository contains The Rebase, an effort to merge the Zcash 2.0 codebase into Bitcoin Core 0.18.x.
+**This software is not production ready.**
 
 What is Bitcoin?
 ----------------
