@@ -10,7 +10,7 @@
 # config file.
 
 [Unit]
-Description=Bitcoin daemon
+Description=BTCP daemon
 After=network.target
 
 [Service]
