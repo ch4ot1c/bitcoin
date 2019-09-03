@@ -89,7 +89,7 @@ src/qt/bitcoin-qt.includes
 Makefile
 !depends/Makefile
 bitcoin-qt
-Bitcoin-Qt.app
+BTCP-Qt.app
 background.tiff*
 
 # Qt Creator
