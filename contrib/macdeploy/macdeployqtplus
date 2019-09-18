@@ -773,13 +773,12 @@ if config.dmg is not None:
             print("+ Creating .dmg disk image +")
         else:
             print("+ Preparing .dmg disk image +")
-    
+
     if config.dmg != "":
         dmg_name = config.dmg
     else:
-        spl = app_bundle_name.split(" ")
-        dmg_name = spl[0] + "".join(p.capitalize() for p in spl[1:])
-    
+        dmg_name = "Bitcoin-Core"
+
     if fancy is None:
         try:
             runHDIUtil("create", dmg_name, srcfolder="dist", format="UDBZ", volname=volname, ov=True)
