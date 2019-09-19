@@ -18,9 +18,9 @@
  *
  * Summary:
  *
- * 1) bit_packed_atomic_flags is bit-packed atomic flags for garbage collection
+ * 1. bit_packed_atomic_flags is bit-packed atomic flags for garbage collection
  *
- * 2) cache is a cache which is performant in memory usage and lookup speed. It
+ * 2. cache is a cache which is performant in memory usage and lookup speed. It
  * is lockfree for erase operations. Elements are lazily erased on the next
  * insert.
  */
@@ -141,10 +141,10 @@ public:
  *
  * User Must Guarantee:
  *
- * 1) Write Requires synchronized access (e.g., a lock)
- * 2) Read Requires no concurrent Write, synchronized with the last insert.
- * 3) Erase requires no concurrent Write, synchronized with last insert.
- * 4) An Erase caller must release all memory before allowing a new Writer.
+ * 1. Write Requires synchronized access (e.g., a lock)
+ * 2. Read Requires no concurrent Write, synchronized with the last insert.
+ * 3. Erase requires no concurrent Write, synchronized with last insert.
+ * 4. An Erase caller must release all memory before allowing a new Writer.
  *
  *
  * Note on function names:
@@ -416,9 +416,9 @@ public:
             /** Swap with the element at the location that was
             * not the last one looked at. Example:
             *
-            * 1) On first iteration, last_loc == invalid(), find returns last, so
+            * 1. On first iteration, last_loc == invalid(), find returns last, so
             *    last_loc defaults to locs[0].
-            * 2) On further iterations, where last_loc == locs[k], last_loc will
+            * 2. On further iterations, where last_loc == locs[k], last_loc will
             *    go to locs[k+1 % 8], i.e., next of the 8 indices wrapping around
             *    to 0 if needed.
             *
