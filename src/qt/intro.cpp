@@ -194,9 +194,9 @@ bool Intro::showIfNeeded(interfaces::Node& node, bool& did_show_intro, bool& pru
        or show a picking dialog */
     if(!gArgs.GetArg("-datadir", "").empty())
         return true;
-    /* 1) Default data directory for operating system */
+    /* 1. Default data directory for operating system */
     QString dataDir = GUIUtil::getDefaultDataDirectory();
-    /* 2) Allow QSettings to override default dir */
+    /* 2. Allow QSettings to override default dir */
     dataDir = settings.value("strDataDir", dataDir).toString();
 
     if(!fs::exists(GUIUtil::qstringToBoostPath(dataDir)) || gArgs.GetBoolArg("-choosedatadir", DEFAULT_CHOOSE_DATADIR) || settings.value("fReset", false).toBool() || gArgs.GetBoolArg("-resetguisettings", false))
@@ -321,7 +321,7 @@ void Intro::startThread()
 
     connect(executor, &FreespaceChecker::reply, this, &Intro::setStatus);
     connect(this, &Intro::requestCheck, executor, &FreespaceChecker::check);
-    /*  make sure executor object is deleted in its own thread */
+    /* make sure executor object is deleted in its own thread */
     connect(thread, &QThread::finished, executor, &QObject::deleteLater);
 
     thread->start();

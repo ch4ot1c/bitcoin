@@ -260,13 +260,13 @@ void BitcoinApplication::startThread()
     BitcoinCore *executor = new BitcoinCore(m_node);
     executor->moveToThread(coreThread);
 
-    /*  communication to and from thread */
+    /* communication to and from thread */
     connect(executor, &BitcoinCore::initializeResult, this, &BitcoinApplication::initializeResult);
     connect(executor, &BitcoinCore::shutdownResult, this, &BitcoinApplication::shutdownResult);
     connect(executor, &BitcoinCore::runawayException, this, &BitcoinApplication::handleRunawayException);
     connect(this, &BitcoinApplication::requestedInitialize, executor, &BitcoinCore::initialize);
     connect(this, &BitcoinApplication::requestedShutdown, executor, &BitcoinCore::shutdown);
-    /*  make sure executor object is deleted in its own thread */
+    /* make sure executor object is deleted in its own thread */
     connect(coreThread, &QThread::finished, executor, &QObject::deleteLater);
 
     coreThread->start();
