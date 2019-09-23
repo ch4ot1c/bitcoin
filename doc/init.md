@@ -53,11 +53,11 @@ Paths
 
 All three configurations assume several paths that might need to be adjusted.
 
-Binary:              `/usr/bin/bitcoind`
-Configuration file:  `/etc/bitcoin/bitcoin.conf`
-Data directory:      `/var/lib/bitcoind`
-PID file:            `/var/run/bitcoind/bitcoind.pid` (OpenRC and Upstart) or `/run/bitcoind/bitcoind.pid` (systemd)
-Lock file:           `/var/lock/subsys/bitcoind` (CentOS)
+- Binary:              `/usr/bin/bitcoind`
+- Configuration file:  `/etc/bitcoin/bitcoin.conf`
+- Data directory:      `/var/lib/bitcoind`
+- PID file:            `/var/run/bitcoind/bitcoind.pid` (OpenRC and Upstart) or `/run/bitcoind/bitcoind.pid` (systemd)
+- Lock file:           `/var/lock/subsys/bitcoind` (CentOS)
 
 The PID directory (if applicable) and data directory should both be owned by the
 bitcoin user and group. It is advised for security reasons to make the
@@ -81,12 +81,31 @@ configuration mechanisms that would allow for overriding the command line
 options specified in the init files (e.g. setting `BITCOIND_DATADIR` for
 OpenRC).
 
-### macOS
+### MacOS
 
-Binary:              `/usr/local/bin/bitcoind`
-Configuration file:  `~/Library/Application Support/Bitcoin/bitcoin.conf`
-Data directory:      `~/Library/Application Support/Bitcoin`
-Lock file:           `~/Library/Application Support/Bitcoin/.lock`
+If installed via `.dmg`, the resulting `.app` will be at `/Applications/Bitcoin Core.app`. `bitcoind` is not available in this case; pass command line flags directly to `Bitcoin Core.app` (use `open` with `--args`).
+
+If installed via `make install`, the binary will be at `/usr/local/bin/bitcoind`.
+
+- Binary:              `/Applications/Bitcoin Core.app/Contents/MacOS/Bitcoin-Qt`
+- Configuration file:  `~/Library/Application Support/Bitcoin/bitcoin.conf`
+- Data directory:      `~/Library/Application Support/Bitcoin`
+- Lock file:           `~/Library/Application Support/Bitcoin/.lock`
+
+### Windows
+
+In a WSL environment, the [Linux paths](#linux) would be used instead.
+
+The installer will place Bitcoin in `%ProgramFiles%\Bitcoin`. `%ProgramFiles%` typically resolves to `C:\Program Files\`.
+
+There are two ways to run Bitcoin: `bitcoin-qt` (gui), or `bitcoind` (cli).
+
+On Windows, Bitcoin uses data directory `%AppData%\Bitcoin`. `%AppData%` typically resolves to `C:\Documents and Settings\%Username%\Application Data\` on versions before Vista, and `C:\Users\%Username%\AppData\Roaming\` on Vista and beyond.
+
+- Binary:              `%ProgramFiles%\Bitcoin\bitcoin-qt.exe`
+- Configuration file:  `%AppData%\Bitcoin\bitcoin.conf`
+- Data directory:      `%AppData%\Bitcoin`
+- Lock file:           `%AppData%\Bitcoin\.lock`
 
 Installing Service Configuration
 -----------------------------------
