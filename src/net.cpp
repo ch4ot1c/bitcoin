@@ -494,45 +494,45 @@ void CNode::SetAddrLocal(const CService& addrLocalIn) {
     }
 }
 
-#undef X
-#define X(name) stats.name = name
+#undef assign
+#define assign(name) stats.name = name
 void CNode::copyStats(CNodeStats &stats)
 {
     stats.nodeid = this->GetId();
-    X(nServices);
-    X(addr);
-    X(addrBind);
+    assign(nServices);
+    assign(addr);
+    assign(addrBind);
     if (m_tx_relay != nullptr) {
         LOCK(m_tx_relay->cs_filter);
         stats.fRelayTxes = m_tx_relay->fRelayTxes;
     } else {
         stats.fRelayTxes = false;
     }
-    X(nLastSend);
-    X(nLastRecv);
-    X(nTimeConnected);
-    X(nTimeOffset);
+    assign(nLastSend);
+    assign(nLastRecv);
+    assign(nTimeConnected);
+    assign(nTimeOffset);
     stats.addrName = GetAddrName();
-    X(nVersion);
+    assign(nVersion);
     {
         LOCK(cs_SubVer);
-        X(cleanSubVer);
+        assign(cleanSubVer);
     }
-    X(fInbound);
-    X(m_manual_connection);
-    X(nStartingHeight);
+    assign(fInbound);
+    assign(m_manual_connection);
+    assign(nStartingHeight);
     {
         LOCK(cs_vSend);
-        X(mapSendBytesPerMsgCmd);
-        X(nSendBytes);
+        assign(mapSendBytesPerMsgCmd);
+        assign(nSendBytes);
     }
     {
         LOCK(cs_vRecv);
-        X(mapRecvBytesPerMsgCmd);
-        X(nRecvBytes);
+        assign(mapRecvBytesPerMsgCmd);
+        assign(nRecvBytes);
     }
-    X(m_legacyWhitelisted);
-    X(m_permissionFlags);
+    assign(m_legacyWhitelisted);
+    assign(m_permissionFlags);
     if (m_tx_relay != nullptr) {
         LOCK(m_tx_relay->cs_feeFilter);
         stats.minFeeFilter = m_tx_relay->minFeeFilter;
@@ -560,7 +560,7 @@ void CNode::copyStats(CNodeStats &stats)
     CService addrLocalUnlocked = GetAddrLocal();
     stats.addrLocal = addrLocalUnlocked.IsValid() ? addrLocalUnlocked.ToString() : "";
 }
-#undef X
+#undef assign
 
 bool CNode::ReceiveMsgBytes(const char *pch, unsigned int nBytes, bool& complete)
 {
