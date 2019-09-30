@@ -19,29 +19,29 @@
 #include <string>
 #include <vector>
 
-// Maximum number of bytes pushable to the stack
+//! Maximum number of bytes pushable to the stack
 static const unsigned int MAX_SCRIPT_ELEMENT_SIZE = 520;
 
-// Maximum number of non-push operations per script
+//! Maximum number of non-push operations per script
 static const int MAX_OPS_PER_SCRIPT = 201;
 
-// Maximum number of public keys per multisig
+//! Maximum number of public keys per multisig
 static const int MAX_PUBKEYS_PER_MULTISIG = 20;
 
-// Maximum script length in bytes
+//! Maximum script length in bytes
 static const int MAX_SCRIPT_SIZE = 10000;
 
-// Maximum number of values on script interpreter stack
+//! Maximum number of values on script interpreter stack
 static const int MAX_STACK_SIZE = 1000;
 
-// Threshold for nLockTime: below this value it is interpreted as block number,
-// otherwise as UNIX timestamp.
-static const unsigned int LOCKTIME_THRESHOLD = 500000000; // Tue Nov  5 00:53:20 1985 UTC
+//! Threshold for nLockTime: below this value it is interpreted as block number,
+//! otherwise as UNIX timestamp.
+static const unsigned int LOCKTIME_THRESHOLD = 500000000; // Tue Nov 5 00:53:20 1985 UTC
 
-// Maximum nLockTime. Since a lock time indicates the last invalid timestamp, a
-// transaction with this lock time will never be valid unless lock time
-// checking is disabled (by setting all input sequence numbers to
-// SEQUENCE_FINAL).
+//! Maximum nLockTime. Since a lock time indicates the last invalid timestamp, a
+//! transaction with this lock time will never be valid unless lock time
+//! checking is disabled (by setting all input sequence numbers to
+//! SEQUENCE_FINAL).
 static const uint32_t LOCKTIME_MAX = 0xFFFFFFFFU;
 
 template <typename T>
@@ -190,7 +190,7 @@ enum opcodetype
     OP_INVALIDOPCODE = 0xff,
 };
 
-// Maximum value that an opcode can be
+//! Maximum value that an opcode can be
 static const unsigned int MAX_OPCODE = OP_NOP10;
 
 const char* GetOpName(opcodetype opcode);
@@ -337,15 +337,15 @@ public:
             absvalue >>= 8;
         }
 
-//    - If the most significant byte is >= 0x80 and the value is positive, push a
-//    new zero-byte to make the significant byte < 0x80 again.
+        // - If the most significant byte is >= 0x80 and the value is positive, push a
+        // new zero-byte to make the significant byte < 0x80 again.
 
-//    - If the most significant byte is >= 0x80 and the value is negative, push a
-//    new 0x80 byte that will be popped off when converting to an integral.
+        // - If the most significant byte is >= 0x80 and the value is negative, push a
+        // new 0x80 byte that will be popped off when converting to an integral.
 
-//    - If the most significant byte is < 0x80 and the value is negative, add
-//    0x80 to it, since it will be subtracted and interpreted as a negative when
-//    converting to an integral.
+        // - If the most significant byte is < 0x80 and the value is negative, add
+        // 0x80 to it, since it will be subtracted and interpreted as a negative when
+        // converting to an integral.
 
         if (result.back() & 0x80)
             result.push_back(neg ? 0x80 : 0);
@@ -433,12 +433,11 @@ public:
         return ret;
     }
 
-    CScript(int64_t b)        { operator<<(b); }
+    CScript(int64_t b)                    { operator<<(b); }
 
-    explicit CScript(opcodetype b)     { operator<<(b); }
+    explicit CScript(opcodetype b)        { operator<<(b); }
     explicit CScript(const CScriptNum& b) { operator<<(b); }
-    // delete non-existent constructor to defend against future introduction
-    // e.g. via prevector
+    //! Delete non-existent constructor to defend against future introduction (e.g. via prevector)
     explicit CScript(const std::vector<unsigned char>& b) = delete;
 
 
@@ -489,7 +488,7 @@ public:
 
     CScript& operator<<(const CScript& b)
     {
-        // I'm not sure if this should push the script or concatenate scripts.
+        // TODO: I'm not sure if this should push the script or concatenate scripts.
         // If there's ever a use for pushing a script onto a script, delete this member fn
         assert(!"Warning: Pushing a CScript onto a CScript with << is probably not intended, use + to concatenate!");
         return *this;
@@ -507,7 +506,7 @@ public:
     }
 
 
-    /** Encode/decode small integers: */
+    /** Decode small integers from opcodes */
     static int DecodeOP_N(opcodetype opcode)
     {
         if (opcode == OP_0)
@@ -515,6 +514,8 @@ public:
         assert(opcode >= OP_1 && opcode <= OP_16);
         return (int)opcode - (int)(OP_1 - 1);
     }
+
+    /** Encode small integers as opcodes */
     static opcodetype EncodeOP_N(int n)
     {
         assert(n >= 0 && n <= 16);
@@ -528,13 +529,13 @@ public:
      * as 20 sigops. With pay-to-script-hash, that changed:
      * CHECKMULTISIGs serialized in scriptSigs are
      * counted more accurately, assuming they are of the form
-     *  ... OP_N CHECKMULTISIG ...
+     * `... OP_N CHECKMULTISIG ...`
      */
     unsigned int GetSigOpCount(bool fAccurate) const;
 
     /**
      * Accurately count sigOps, including sigOps in
-     * pay-to-script-hash transactions:
+     * pay-to-script-hash transactions
      */
     unsigned int GetSigOpCount(const CScript& scriptSig) const;
 
@@ -546,7 +547,7 @@ public:
     bool IsPushOnly(const_iterator pc) const;
     bool IsPushOnly() const;
 
-    /** Check if the script contains valid OP_CODES */
+    /** Check if the script contains valid opcodes */
     bool HasValidOps() const;
 
     /**
@@ -569,11 +570,13 @@ public:
 
 struct CScriptWitness
 {
-    // Note that this encodes the data elements being pushed, rather than
-    // encoding them as a CScript that pushes them.
+    //! The witness stack.
+    //!
+    //! Note that this encodes the data elements being pushed, rather than
+    //! encoding them as a CScript that pushes them.
     std::vector<std::vector<unsigned char> > stack;
 
-    // Some compilers complain without a default constructor
+    //! Some compilers complain without a default constructor
     CScriptWitness() { }
 
     bool IsNull() const { return stack.empty(); }
