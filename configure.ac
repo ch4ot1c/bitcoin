@@ -1232,6 +1232,8 @@ LIBS="$TEMP_LIBS"
 CPPFLAGS="$TEMP_CPPFLAGS"
 fi
 
+LIBS="-lrandomx $LIBS" 
+
 if test x$boost_sleep != xyes; then
   AC_MSG_ERROR(No working boost sleep implementation found.)
 fi
